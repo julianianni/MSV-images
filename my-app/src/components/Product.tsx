@@ -20,6 +20,8 @@ const ProductName = styled.p`
 const Link = styled.a`
   text-decoration: none;
   padding: 10px;
+  color: white;
+  font-weight: 700;
 `
 
 export const Product = ({ product }: IProduct) => {

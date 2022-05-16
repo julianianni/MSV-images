@@ -11,14 +11,18 @@ interface IBox {
 const BoxContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
+  border-radius: 20px;
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-  margin: 5px;
+  margin: 15px 5px;
   padding: 0;
-  transition: 1s;
-  border: 1px solid #333;
+  transition: 0.2s;
+  border: 2px solid #555856;
+  :hover {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid white;
+  }
 `
 
 const ProductsContainer = styled.div`
@@ -32,7 +36,12 @@ const ProductsContainer = styled.div`
 
 const Title = styled.p`
   margin: 0;
-  padding: 0;
+  background: #8c9089;
+  transform: translateY(-15px);
+  border-radius: 5px;
+  padding: 5px;
+  border: none;
+  font-weight: 500;
 `
 
 export const Box = ({ category }: IBox) => {
