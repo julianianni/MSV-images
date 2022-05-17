@@ -32,6 +32,7 @@ const ProductsContainer = styled.div`
   width: 100%;
   height: 100%;
   max-width: 450px;
+  flex-grow: 1;
 `
 
 const Title = styled.p`
@@ -39,9 +40,10 @@ const Title = styled.p`
   background: #8c9089;
   transform: translateY(-15px);
   border-radius: 5px;
-  padding: 5px;
+  padding: 5px 15px;
   border: none;
   font-weight: 500;
+  font-size: 24px;
 `
 
 export const Box = ({ category }: IBox) => {
@@ -49,16 +51,19 @@ export const Box = ({ category }: IBox) => {
 
   return (
     <>
-      {!isEmpty(products) && (
-        <BoxContainer>
-          <Title>{name}</Title>
-          <ProductsContainer>
-            {products.map((product, idx) => (
+      <BoxContainer>
+        <Title>{name}</Title>
+        <ProductsContainer>
+          {!isEmpty(products) ? (
+            products.map((product, idx) => (
               <Product key={idx} product={product} />
-            ))}
-          </ProductsContainer>
-        </BoxContainer>
-      )}
+            ))
+          ) : (
+            //this should be handled different, leave as it is for timing reasons
+            <p>No products...</p>
+          )}
+        </ProductsContainer>
+      </BoxContainer>
     </>
   )
 }

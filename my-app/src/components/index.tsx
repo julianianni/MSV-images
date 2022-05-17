@@ -3,6 +3,7 @@ import { Box } from './Box'
 import styled from 'styled-components'
 import axios from 'axios'
 import { get, isEmpty } from 'lodash/fp'
+import { CATEGORIES_URL, TOTAL_TAKE, PRODUCTS_PER_CATEGORY } from '../constants'
 
 const Container = styled.div`
   animation: scroll 70s linear infinite;
@@ -10,7 +11,7 @@ const Container = styled.div`
     #111111;
   color: #eee;
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,9 +41,10 @@ const Container = styled.div`
 const CategoriesContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  min-width: 100%;
   justify-content: space-between;
   padding: 1rem;
+  min-width: 80vw;
+  max-width: 80vw;
 `
 
 export interface IProducts {
@@ -58,37 +60,38 @@ export interface ICategory {
   id: string
 }
 
-const StlyedBtn = styled.button`
+const StyledArrow = styled.span`
   border-radius: 5px;
   border: none;
-  width: 200px;
-  height: 30px;
-  background: white;
+  background: none;
+  font-size: 80px;
+  margin: 10px;
   cursor: pointer;
-  &:hover {
-    background: black;
-    color: white;
-  }
 `
 
 const SubContainer = styled.div`
   margin-top: 20px;
   display: flex;
-  flex-direction: column;
   align-items: center;
 `
 
-const CATEGORIES_URL =
-  'https://egld.community/api/categories?&includeProducts=5&page=1'
-
-const CRYPTO_URL =
-  'https://www.cryptoatlas.io/api/categories?take=100&includeProducts=5&page=1'
+const generateURL = ({
+  url,
+  currentPage,
+}: {
+  url: string
+  currentPage: number
+}): string => {
+  const page = `&page=${currentPage}`
+  const totalTake = `&take=${TOTAL_TAKE}`
+  const productsPerCategory = `&includeProducts=${PRODUCTS_PER_CATEGORY}`
+  return url + totalTake + page + productsPerCategory
+}
 
 export const Main = () => {
   const [categories, setCategories] = useState<ICategory[]>([])
-  const [currentURL, setCurrentUrl] = useState<
-    typeof CATEGORIES_URL | typeof CRYPTO_URL
-  >(CATEGORIES_URL) //adding a simple toggle button to demonstrate reusability between API calls
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
 
   const getProducts = async (url: string) => {
@@ -101,17 +104,22 @@ export const Main = () => {
       })
       .finally(() => setIsLoading(false))
     if (isEmpty(categoriesFetched)) return
+    setTotalPages(categoriesFetched?.meta?.pageCount ?? 1)
     setCategories(categoriesFetched?.data ?? [])
   }
 
-  const handleClick = () => {
-    if (currentURL === CATEGORIES_URL) setCurrentUrl(CRYPTO_URL)
-    else setCurrentUrl(CATEGORIES_URL)
+  const handleNext = () => {
+    if (totalPages === currentPage) setCurrentPage(1)
+    else setCurrentPage((prevPage) => prevPage + 1)
+  }
+  const handlePrevious = () => {
+    if (currentPage === 1) setCurrentPage(totalPages)
+    else setCurrentPage((prevPage) => prevPage - 1)
   }
 
   useEffect(() => {
-    getProducts(currentURL)
-  }, [currentURL])
+    getProducts(generateURL({ url: CATEGORIES_URL, currentPage }))
+  }, [currentPage])
 
   return (
     <Container>
@@ -119,12 +127,13 @@ export const Main = () => {
         <p>loading....</p> //this should be a  spinner or similar, simplyfing for example purpose
       ) : (
         <SubContainer>
-          <StlyedBtn onClick={handleClick}>Toggle categories</StlyedBtn>
+          <StyledArrow onClick={() => handlePrevious()}>{'<'}</StyledArrow>
           <CategoriesContainer>
             {categories.map((category) => (
               <Box key={category.id} category={category} />
             ))}
           </CategoriesContainer>
+          <StyledArrow onClick={() => handleNext()}>{'>'}</StyledArrow>
         </SubContainer>
       )}
     </Container>
