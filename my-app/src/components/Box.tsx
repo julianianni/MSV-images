@@ -15,8 +15,6 @@ export const Box = ({ category }: IBox) => {
   const [groupedProducts, setGroupedProducts] = useState<IProducts[] | []>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
-  // console.log(products)
-
   const fetchProductsBySlug = async () => {
     if (products.length !== PRODUCTS_PER_CATEGORY) {
       setIsLoading(false)
@@ -35,8 +33,6 @@ export const Box = ({ category }: IBox) => {
   useEffect(() => {
     fetchProductsBySlug()
   }, [products])
-
-  console.log(groupedProducts)
 
   return (
     <>
