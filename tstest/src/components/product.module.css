@@ -8,7 +8,12 @@
   text-decoration: none;
   color: white;
   font-weight: 700;
-  padding: 5px;
+  padding: 1px;
+  /* max-width: 10vw;
+  min-width: 10vw;
+  min-height: 5vw;
+  max-height: 5vw; */
+  /* background: red; */
 }
 .link:hover {
   border-radius: 10px;
