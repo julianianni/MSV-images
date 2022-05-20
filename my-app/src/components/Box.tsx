@@ -2,7 +2,7 @@ import { ICategory, IProducts } from './Main'
 import { Product } from './Product'
 import { isEmpty, get } from 'lodash/fp'
 import styles from './box.module.css'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { CATEGORIES_URL, PRODUCTS_PER_CATEGORY } from '../constants'
 
