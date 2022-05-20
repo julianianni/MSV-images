@@ -45,7 +45,7 @@ export const Box = ({ category }: IBox) => {
       ) : (
         <div
           className={styles.boxContainer}
-          style={{ width: `${groupedProducts.length * 33}px` }}
+          style={{ width: `${groupedProducts.length * 36}px` }}
         >
           <p className={styles.title}>{name}</p>
           <div className={styles.productsContainer}>
