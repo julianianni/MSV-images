@@ -1,0 +1,16 @@
+.productName {
+  margin-left: 5px;
+}
+
+.link {
+  display: flex;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+  padding: 5px;
+}
+.link:hover {
+  border-radius: 10px;
+  background: rgba(100, 100, 100, 0.5);
+}
